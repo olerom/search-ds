@@ -10,7 +10,6 @@ public interface ISet<E extends Comparable<E>> {
      * @return the number of elements in this set (its cardinality)
      */
     int size();
-
     /**
      * @return true if this set contains no elements
      */
