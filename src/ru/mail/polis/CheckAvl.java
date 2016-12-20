@@ -35,11 +35,25 @@ public class CheckAvl {
 
         System.out.println(tree.first());
         System.out.println(tree.last());
+        System.out.println(tree.size());
         List<Integer> list = tree.inorderTraverse();
         for (Integer x : list) {
             System.out.print(x + " ");
         }
         System.out.println();
         tree.simmetr();
+
+        System.out.println();
+        System.out.println("....................");
+
+        AVLTree<Integer> avlTree = new AVLTree<>();
+
+        System.out.println(avlTree.remove(10));
+        System.out.println(avlTree.add(10));
+
+        System.out.println(avlTree.remove(10));
+        System.out.println(avlTree.add(100));
+
+        avlTree.simmetr();
     }
 }

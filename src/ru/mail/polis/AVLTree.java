@@ -1,6 +1,9 @@
 package ru.mail.polis;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 public class AVLTree<E extends Comparable<E>> implements ISortedSet<E> {
     class AVLNode {
@@ -32,7 +35,7 @@ public class AVLTree<E extends Comparable<E>> implements ISortedSet<E> {
     @Override
     public E first() {
         if (root == null) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("AVLTree is empty, no first element");
         } else {
             AVLNode min = root;
             while (min.left != null) {
@@ -45,7 +48,7 @@ public class AVLTree<E extends Comparable<E>> implements ISortedSet<E> {
     @Override
     public E last() {
         if (root == null) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("AVLTree is empty, no last element");
         } else {
             AVLNode max = root;
             while (max.right != null) {
@@ -72,22 +75,11 @@ public class AVLTree<E extends Comparable<E>> implements ISortedSet<E> {
 
     @Override
     public int size() {
-        int result = 0;
-        if (root != null) {
-            Queue<AVLNode> queue = new ArrayDeque<>();
-            queue.add(root);
-            while (!queue.isEmpty()) {
-                AVLNode curr = queue.poll();
-                if (curr.left != null) {
-                    queue.add(curr.left);
-                }
-                if (curr.right != null) {
-                    queue.add(curr.right);
-                }
-                result++;
-            }
+        if (size < 0) {
+            return Integer.MAX_VALUE;
+        } else {
+            return size;
         }
-        return result;
     }
 
     @Override
@@ -98,7 +90,7 @@ public class AVLTree<E extends Comparable<E>> implements ISortedSet<E> {
     @Override
     public boolean contains(E value) {
         if (value == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("Input value is null");
         } else {
             return checkContains(root, value);
         }
@@ -121,13 +113,14 @@ public class AVLTree<E extends Comparable<E>> implements ISortedSet<E> {
     @Override
     public boolean add(E value) {
         if (value == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("Input value is null");
         } else if (contains(value)) {
             return false;
         }
         AVLNode node = new AVLNode(value);
 
         insertAVL(this.root, node);
+        size++;
         return true;
     }
 
@@ -289,12 +282,13 @@ public class AVLTree<E extends Comparable<E>> implements ISortedSet<E> {
     @Override
     public boolean remove(E value) {
         if (value == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("Input value is null");
         } else if (!contains(value)) {
             return false;
         }
 
         removeAVL(root, value);
+        size--;
         return true;
     }
 
@@ -326,10 +320,13 @@ public class AVLTree<E extends Comparable<E>> implements ISortedSet<E> {
                     // Если это левый ребенок, то делаем его вершиной.
                     this.root = q.left;
                     q.left.parent = null;
-                } else {
+                } else if (q.right != null){
                     // Аналогично для правого.
                     this.root = q.right;
                     q.right.parent = null;
+                } else {
+                    // Если нет детей, то просто нуллим корень
+                    this.root = null;
                 }
                 // Для сбощика мусора нуллим q.
                 q = null;
@@ -368,14 +365,31 @@ public class AVLTree<E extends Comparable<E>> implements ISortedSet<E> {
         r = null;
     }
 
-    private AVLNode successor(AVLNode q) {//predecessor
-        // Так почему-то реализовано в визуализаторе
-        // Идем к левому ребенку, а потом по всем его правым, чтобы в будущем cвапнуть с удаляемым.
-        AVLNode r = q.left;
-        while (r.right != null) {
-            r = r.right;
+    // Predecessor же должен быть
+    // Так почему-то реализовано в визуализаторе
+//    private AVLNode successor(AVLNode q) {
+//        // Идем к левому ребенку, а потом по всем его правым, чтобы в будущем cвапнуть с удаляемым.
+//        AVLNode r = q.left;
+//        while (r.right != null) {
+//            r = r.right;
+//        }
+//        return r;
+//    }
+    //это пре на самом деле, просто переименуй потом
+    private AVLNode successor(AVLNode x) {
+        if (x.left != null) {
+            AVLNode q = x.left;
+            while (q.right != null) {
+                q = q.right;
+            }
+            return q;
         }
-        return r;
+        AVLNode y = x.parent;
+        while (y != null && x == y.left) {
+            x = y;
+            y = y.parent;
+        }
+        return y;
     }
 
 
