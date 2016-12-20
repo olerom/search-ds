@@ -320,7 +320,7 @@ public class AVLTree<E extends Comparable<E>> implements ISortedSet<E> {
                     // Если это левый ребенок, то делаем его вершиной.
                     this.root = q.left;
                     q.left.parent = null;
-                } else if (q.right != null){
+                } else if (q.right != null) {
                     // Аналогично для правого.
                     this.root = q.right;
                     q.right.parent = null;
@@ -365,17 +365,7 @@ public class AVLTree<E extends Comparable<E>> implements ISortedSet<E> {
         r = null;
     }
 
-    // Predecessor же должен быть
-    // Так почему-то реализовано в визуализаторе
-//    private AVLNode successor(AVLNode q) {
-//        // Идем к левому ребенку, а потом по всем его правым, чтобы в будущем cвапнуть с удаляемым.
-//        AVLNode r = q.left;
-//        while (r.right != null) {
-//            r = r.right;
-//        }
-//        return r;
-//    }
-    //это пре на самом деле, просто переименуй потом
+    // В визуализаторе предецессор, поэтому заменил на него.
     private AVLNode successor(AVLNode x) {
         if (x.left != null) {
             AVLNode q = x.left;

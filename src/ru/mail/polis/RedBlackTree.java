@@ -434,7 +434,7 @@ public class RedBlackTree<E extends Comparable<E>> implements ISortedSet<E> {
     }
 
     //**********
-    // Уже не симметр, но пох - для дебага сойдет
+    // Уже не симметр, но для дебага сойдет
     public void simmetr() {
         printLined();
     }

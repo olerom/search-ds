@@ -46,6 +46,7 @@ public class CheckRB {
         }
 
         System.out.println();
+        System.out.println("-----");
 
         tree.remove(2);
         tree.remove(4);
